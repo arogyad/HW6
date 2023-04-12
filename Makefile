@@ -1,7 +1,7 @@
 all:
-	g++ -g -Wall --std=c++14 RedBlackTree.cpp RedBlackTreeTests.cpp -o rdt-tests
+	g++ -g -Wall --std=c++14 RedBlackTree.cpp RedBlackTreeTests.cpp -o rbt-tests
 
 try:
-	./rdt-tests
+	./rbt-tests
 
 run: all try
