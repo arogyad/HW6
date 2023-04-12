@@ -372,7 +372,6 @@ void RedBlackTree::DoBalance(RBTNode* node) {
                 grandparent->right->color = Color::Red;
                 grandparent->left->color = Color::Red;
             } else {
-                cout << "here" << endl;
                 RedBlackTree::right_rotate(p_pointer);
                 RedBlackTree::left_rotate(g_pointer);
                 node->right->color = Color::Red;
