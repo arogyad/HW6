@@ -39,6 +39,7 @@ public:
     string ToPrefixString() const { return ToPrefixString(this->root); }
     string ToPostfixString() const { return ToPostfixString(this->root); }
     void Insert(int value);
+    void Remove(int value);
     bool Contains(int value) const;
     int GetMax() const;
     int GetMin() const;

@@ -10,6 +10,54 @@ void RedBlackTree::copy(RBTNode *node, RBTNode** other) {
         return;
     }
 
+    /**
+     * The node at first points to the root of the rbt from where we are copying
+     * The other points to the pointer on the tree where we are copying to 
+     * Here, we make changes to the pointer to "other" because this will change, i.e.
+     * the root node of the rbt where we are copying to.
+     * 
+     * If we had only passed @param other as pointer to the RBTNode then making changes
+     * to the pointer @param other would only change the copy of the root node rather than
+     * making changes to that exact root node
+     * 
+     * For example:
+     * Let rbt1 be the Red-Black Tree we are copying from, and rbt2 be the Red-Black Tree
+     * where we are copying to
+     *              rbt1 = *B4
+     *                   /  \
+     *                *R4   *R5
+     * and we are to copy it to rbt2, intially rbt2 = nullptr;
+     * When we make copy we pass the root i.e. nullptr, we pass the address of nullptr
+     * rather than the nullptr. Thus, when we make changes to the *other it changes the
+     * root node of rbt2 rather than the copy of rbt2's root.
+     * 
+     * rbt2 = RedBlackTree(rbt1);
+     * 
+     * // In copy constructor
+     *          RedBlackTree::copy(rbt1.root, &rbt2->root)
+     * 
+     * In staic copy function,
+     *          Initially, node = rb1.root
+     *                     other = &rbt2.root (&nullptr)
+     * When the program reaches this step, the pointer that other points to changes to contain
+     * a new RBTNode with color and value equal to the @param node's (rbt1.root) values
+     * This causes the rbt2's root to now be a pointer to a RBTNode with values equal to that of
+     * rbt1
+     *     Thus changed rbt2 = *B4
+     * If @param other were passed as only a pointer it wouldn't be able to change the
+     * root in actual tree for this case
+     * This is then recursively performed for the right and the left half with them also
+     * being passed as the pointer to RBTNode pointer for the same reason.
+     * 
+     * After right recursion,
+     *                  rbt2 = *R4
+     *                            \
+     *                             *R5
+     * After the left recursion,
+     *                  rbt2 = *R4
+     *                        /   \
+     *                    *R3      *R5
+     */
     *other = new RBTNode{.color = node->color, .value = node->value};
 
     RedBlackTree::copy(node->right, &(*other)->right);
