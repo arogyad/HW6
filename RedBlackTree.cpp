@@ -10,7 +10,7 @@ void RedBlackTree::copy(RBTNode *node, RBTNode** other) {
         return;
     }
 
-    *other = new RBTNode{.value = node->value, .color = node->color};
+    *other = new RBTNode{.color = node->color, .value = node->value};
 
     RedBlackTree::copy(node->right, &(*other)->right);
     RedBlackTree::copy(node->left, &(*other)->left);
