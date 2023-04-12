@@ -1,6 +1,28 @@
 #include "RedBlackTree.h"
 
 /**
+ * This function copies the @param node into pointer to @param other recursively
+ * The @param other stores the actual pointer to the nodes rather than a copy of the
+ * pointer to the node
+ * */
+void RedBlackTree::copy(RBTNode *node, RBTNode** other) {
+    if(node == nullptr) {
+        return;
+    }
+
+    *other = new RBTNode{.value = node->value, .color = node->color};
+
+    RedBlackTree::copy(node->right, &(*other)->right);
+    RedBlackTree::copy(node->left, &(*other)->left);
+}
+
+RedBlackTree::RedBlackTree(const RedBlackTree &other) {
+    if(other.root) {
+        RedBlackTree::copy(other.root, &this->root);
+    }
+}
+
+/**
  * Checks if a value is contained in the Red-Black Tree
  * @param value : the value to be checked for entry in RBT
  * @return bool

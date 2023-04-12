@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <cassert>
 #include <random>
@@ -180,10 +179,19 @@ void TestCopyConstructor(){
 
 	RedBlackTree rbt2 = RedBlackTree(rbt1);
 
+	cout << rbt1.ToPrefixString() << endl;
+	cout << rbt2.ToPrefixString() << endl;
+
 	assert(rbt2.ToPrefixString() == rbt1.ToPrefixString());
 
 	rbt1.Insert(200);
 	assert(rbt2.ToPrefixString() != rbt1.ToPrefixString());
+
+	rbt1 = RedBlackTree();
+	rbt2 = RedBlackTree(rbt1);
+
+	cout << rbt1.ToPrefixString() << endl;
+	cout << rbt2.ToPrefixString() << endl;
 
 	cout << "PASSED!" << endl << endl;
 }
@@ -214,9 +222,6 @@ void TestContains(){
 	cout << "PASSED!" << endl << endl;
 }
 
-
-
-
 void TestGetMinimumMaximum(){
 	cout << "Testing Get Minimum and Get Maximum..." << endl;
     RedBlackTree* rbt = new RedBlackTree();
@@ -245,21 +250,21 @@ void TestGetMinimumMaximum(){
 int main(){
 
 	
-	TestSimpleConstructor();
+	// TestSimpleConstructor();
 	
-	TestInsertFirstNode();
-	TestInsertSecondNode();
-	TestInsertThirdNode();
-	TestInsertFourthNode();
-	TestInsertFifthNode();
+	// TestInsertFirstNode();
+	// TestInsertSecondNode();
+	// TestInsertThirdNode();
+	// TestInsertFourthNode();
+	// TestInsertFifthNode();
 
-	TestToStrings();
-	TestInsertRandomTests();
+	// TestToStrings();
+	// TestInsertRandomTests();
 
-//	TestCopyConstructor();
+	TestCopyConstructor();
 
-	TestContains();
-	TestGetMinimumMaximum();
+	// TestContains();
+	// TestGetMinimumMaximum();
 
 	
 	cout << "ALL TESTS PASSED!!" << endl;

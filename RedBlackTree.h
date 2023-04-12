@@ -33,6 +33,8 @@ struct RBTNode {
 
 class RedBlackTree {
 public:
+    RedBlackTree(const RedBlackTree &other);
+    RedBlackTree(){};
     string ToInfixString() const { return ToInfixString(this->root); }
     string ToPrefixString() const { return ToPrefixString(this->root); }
     string ToPostfixString() const { return ToPostfixString(this->root); }
@@ -55,6 +57,7 @@ private:
     void get_uncle(RBTNode* node, RBTNode** uncle);
     static void right_rotate(RBTNode** node);
     static void left_rotate(RBTNode** node);
+    static void copy(RBTNode *node, RBTNode** other);
 };
 
 #endif
