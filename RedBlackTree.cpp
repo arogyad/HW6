@@ -304,6 +304,35 @@ void RedBlackTree::DoBalance(RBTNode* node) {
 
             if(grandparent->left == parent && parent->left == node) {
                 RedBlackTree::right_rotate(g_pointer);
+                /**
+                 * For example:
+                 *              rbt = *B5
+                 *                   /   
+                 *                *R4
+                 *               /
+                 *            *R3
+                 * If after the insertion of *R3 the rbt looks as above. The tree needs to be balanced.
+                 * For balance we perform right rotation and change the color of the children nodes.
+                 * Here g_pointer points to the actual *B5 node and not a copy of that pointer. So, when
+                 * the g_pointer is moved around during right_rotate, it changes the orientation of the entire
+                 * Red-Black Tree.
+                 * 
+                 * After right rotation:
+                 *             rbt = *R4
+                 *                   /  \
+                 *                *R4   *R5
+                 * Here, the g_pointer will now point to the pointer *R4 rather than *R5 because g_pointer being
+                 * pointer to a pointer used to point to *R5 location in RBT which has now been changed to *R4.
+                 * The pointer that g_pointer used to point to has now been changed to something else 
+                 * (From *R5 to *R4)
+                 * , thus g_pointer now points to that changed pointer which now happens to be the grandparent
+                 * After recoloration it changes into:
+                 *             rbt = *B4
+                 *                   /  \
+                 *                *R4   *R5
+                 * 
+                 * This same process happens for all of the other balancing conditions.
+                 */
                 grandparent = *g_pointer;
                 grandparent->color = Color::Black;
                 grandparent->right->color = Color::Red;
