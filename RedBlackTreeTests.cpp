@@ -190,6 +190,10 @@ void TestCopyConstructor(){
 	rbt1 = RedBlackTree();
 	rbt2 = RedBlackTree(rbt1);
 
+	rbt1 = RedBlackTree();
+	rbt1.Insert(2);
+	rbt2 = RedBlackTree(rbt1);
+
 	cout << rbt1.ToPrefixString() << endl;
 	cout << rbt2.ToPrefixString() << endl;
 
