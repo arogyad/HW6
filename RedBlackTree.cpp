@@ -52,7 +52,7 @@ int RedBlackTree::GetMin() const {
  * Returns the numbers of nodes in the Red-Black Tree
  */
 unsigned  int RedBlackTree::Size() const {
-    return this->size;
+    return this->numItems;
 }
 
 /**
@@ -346,6 +346,10 @@ void RedBlackTree::DoBalance(RBTNode* node) {
  */
 void RedBlackTree::Insert(int value) {
     RBTNode* node = nullptr;
+    if(this->Contains(value)) {
+        throw invalid_argument("Node: " + to_string(value) + " already in RBT.");
+
+    }
     if(this->root == nullptr) {
         this->root = new RBTNode{.color = Color::Black, .value = value};
         return;
@@ -354,7 +358,7 @@ void RedBlackTree::Insert(int value) {
     }
 
     this->DoBalance(node);
-    this->size++;
+    this->numItems++;
 }
 
 string RedBlackTree::ToPrefixString(const RBTNode* pos) {

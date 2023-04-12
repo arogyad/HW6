@@ -44,7 +44,7 @@ public:
 
 private:
     RBTNode* root = nullptr;
-    unsigned int size = 0;
+    unsigned long long int numItems = 0;
     static string ToInfixString(const RBTNode* pos);
     static string ToPrefixString(const RBTNode* pos);
     static string ToPostfixString(const RBTNode* pos);
