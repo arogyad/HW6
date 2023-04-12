@@ -254,16 +254,16 @@ void TestGetMinimumMaximum(){
 int main(){
 
 	
-	// TestSimpleConstructor();
+	TestSimpleConstructor();
 	
-	// TestInsertFirstNode();
-	// TestInsertSecondNode();
-	// TestInsertThirdNode();
-	// TestInsertFourthNode();
-	// TestInsertFifthNode();
+	TestInsertFirstNode();
+	TestInsertSecondNode();
+	TestInsertThirdNode();
+	TestInsertFourthNode();
+	TestInsertFifthNode();
 
-	// TestToStrings();
-	// TestInsertRandomTests();
+	TestToStrings();
+	TestInsertRandomTests();
 
 	TestCopyConstructor();
 
