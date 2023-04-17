@@ -169,8 +169,10 @@ void RedBlackTree::BinaryInsert(int value, RBTNode** inserted) {
     *inserted = *curr;
 }
 
-void RedBlackTree::BinaryRemove(int value) {
-    RBTNode* curr = this->root;
+// I think this should take a node as well, to let to know where it is removing from :)
+// TODO: Add a node argument in the function definition
+void RedBlackTree::BinaryRemove(int value, RBTNode* from) {
+    RBTNode* curr = from;
     bool right = false;
 
     while(curr != nullptr) {
@@ -189,6 +191,8 @@ void RedBlackTree::BinaryRemove(int value) {
         RBTNode* parent = nullptr;
         this->get_parent(curr, &parent);
 
+        cout << "here" << endl;
+
         if(right) {
             parent->right = nullptr;
         } else {
@@ -196,20 +200,27 @@ void RedBlackTree::BinaryRemove(int value) {
         }
 
         delete curr;
-    } else if (curr->left != nullptr || curr->right != nullptr) {
-        RBTNode** replacement = curr->left == nullptr ? &curr->right : &curr->left;
+    } else if (curr->left == nullptr || curr->right == nullptr) {
+        RBTNode* replacement = curr->left == nullptr ? curr->right : curr->left;
 
         RBTNode* parent = nullptr;
         this->get_parent(curr, &parent);
 
         if(right) {
-            parent->right = *replacement;
+            parent->right = replacement;
         } else {
-            parent->left = *replacement;
+            parent->left = replacement;
         }
+
+        delete curr;
     } else {
-        RBTNode** replaacement = nullptr;
-        ///
+        RBTNode* successor = curr->right;
+        while(successor->left != nullptr) {
+            successor = successor->left;
+        }
+        int val = successor->value;
+        this->BinaryRemove(successor->value, successor);
+        curr->value = val;
     }
 }
 
@@ -508,7 +519,7 @@ void RedBlackTree::Remove(int value) {
     RBTNode* node = nullptr;
 
     // TODO: Add check for the contain of the value in rbt
-    this->BinaryRemove(value);
+    this->BinaryRemove(value, this->root);
 }
 
 string RedBlackTree::ToPrefixString(const RBTNode* pos) {

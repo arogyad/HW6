@@ -264,10 +264,11 @@ void TestRemove() {
 	rbt->Insert(5);
 	rbt->Insert(6);
 	rbt->Insert(4);
+    rbt->Insert(13);
 
 	cout << rbt->ToPrefixString() << endl;
 
-	rbt->Remove(3);
+	rbt->Remove(12);
 
 	cout << rbt->ToPrefixString() << endl;
 }
