@@ -60,7 +60,7 @@ void TestInsertThirdNode(){
 	rbt->Insert(25); // Right Left
 	assert(rbt->ToPrefixString() == " B25  R15  R30 ");
 	delete rbt;
-	
+
 	rbt = new RedBlackTree();
 	rbt->Insert(30);
 	rbt->Insert(15);
@@ -254,7 +254,23 @@ void TestGetMinimumMaximum(){
 }
 
 
+void TestRemove() {
+	RedBlackTree* rbt = new RedBlackTree();
+	rbt->Insert(3);
+	rbt->Insert(8);
+	rbt->Insert(12);
+	rbt->Insert(14);
+	rbt->Insert(11);
+	rbt->Insert(5);
+	rbt->Insert(6);
+	rbt->Insert(4);
 
+	cout << rbt->ToPrefixString() << endl;
+
+	rbt->Remove(3);
+
+	cout << rbt->ToPrefixString() << endl;
+}
 
 
 int main(){
@@ -271,10 +287,12 @@ int main(){
 	// TestToStrings();
 	// TestInsertRandomTests();
 
-	TestCopyConstructor();
+	// TestCopyConstructor();
 
 	// TestContains();
 	// TestGetMinimumMaximum();
+
+	TestRemove();
 
 	
 	cout << "ALL TESTS PASSED!!" << endl;

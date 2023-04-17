@@ -169,6 +169,50 @@ void RedBlackTree::BinaryInsert(int value, RBTNode** inserted) {
     *inserted = *curr;
 }
 
+void RedBlackTree::BinaryRemove(int value) {
+    RBTNode* curr = this->root;
+    bool right = false;
+
+    while(curr != nullptr) {
+        if(curr->value == value) {
+            break;
+        } else if (curr->value < value) {
+            curr = curr->right;
+            right = true;
+        } else {
+            curr = curr->left;
+            right = false;
+        }
+    }
+
+    if(curr->left == nullptr && curr->right == nullptr) {
+        RBTNode* parent = nullptr;
+        this->get_parent(curr, &parent);
+
+        if(right) {
+            parent->right = nullptr;
+        } else {
+            parent->left = nullptr; 
+        }
+
+        delete curr;
+    } else if (curr->left != nullptr || curr->right != nullptr) {
+        RBTNode** replacement = curr->left == nullptr ? &curr->right : &curr->left;
+
+        RBTNode* parent = nullptr;
+        this->get_parent(curr, &parent);
+
+        if(right) {
+            parent->right = *replacement;
+        } else {
+            parent->left = *replacement;
+        }
+    } else {
+        RBTNode** replaacement = nullptr;
+        ///
+    }
+}
+
 /**
  * Returns the parent of the current node
  * @param node : the node whose parent is to found
@@ -458,6 +502,13 @@ void RedBlackTree::Insert(int value) {
 
     this->DoBalance(node);
     this->numItems++;
+}
+
+void RedBlackTree::Remove(int value) {
+    RBTNode* node = nullptr;
+
+    // TODO: Add check for the contain of the value in rbt
+    this->BinaryRemove(value);
 }
 
 string RedBlackTree::ToPrefixString(const RBTNode* pos) {

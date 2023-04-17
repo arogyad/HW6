@@ -52,6 +52,7 @@ private:
     static string ToPrefixString(const RBTNode* pos);
     static string ToPostfixString(const RBTNode* pos);
     void BinaryInsert(int val, RBTNode** inserted);
+    void BinaryRemove(int value);
     void DoBalance(RBTNode* node);
     void get_parent(RBTNode* node, RBTNode** parent);
     void find(RBTNode* node, RBTNode*** location);
