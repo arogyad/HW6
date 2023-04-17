@@ -68,6 +68,7 @@ RedBlackTree::RedBlackTree(const RedBlackTree &other) {
     if(other.root) {
         RedBlackTree::copy(other.root, &this->root);
     }
+    this->numItems = other.numItems;
 }
 
 /**
