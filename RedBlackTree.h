@@ -35,6 +35,7 @@ class RedBlackTree {
 public:
     RedBlackTree(const RedBlackTree &other);
     RedBlackTree(){};
+    ~RedBlackTree();
     string ToInfixString() const { return ToInfixString(this->root); }
     string ToPrefixString() const { return ToPrefixString(this->root); }
     string ToPostfixString() const { return ToPostfixString(this->root); }
@@ -57,6 +58,7 @@ private:
     void get_parent(RBTNode* node, RBTNode** parent);
     void find(RBTNode* node, RBTNode*** location);
     void get_uncle(RBTNode* node, RBTNode** uncle);
+    void fix_double_black(RBTNode* node);
     static void right_rotate(RBTNode** node);
     static void left_rotate(RBTNode** node);
     static void copy(RBTNode *node, RBTNode** other);
