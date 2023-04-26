@@ -633,6 +633,12 @@ void RedBlackTree::DoBalance(RBTNode* node, RBTNode** parent, RBTNode** grandpar
 /**
  * Inserts a value into the Red-Black Tree and performs the balance
  * @param value : value to be inserted into Red-Black Tree
+ * Speed Test:
+ *              Inserted 69094 ID in 1e-06 seconds.
+ *              Inserted 677287 ID in 3e-06 seconds.
+ *              Inserted 2117282 ID in 1e-06 seconds.
+ *              Inserted 2960363 ID in 2e-06 seconds.
+ *              Inserted 3505712 ID in 2e-06 seconds.
  */
 void RedBlackTree::Insert(int value) {
     RBTNode* node = nullptr;
@@ -656,6 +662,16 @@ void RedBlackTree::Insert(int value) {
     this->numItems++;
 }
 
+/**
+ *
+ * @param value
+ * Speed Test:
+ *             Deleted 3505712 ID in 1e-05 seconds.
+ *             Deleted 2960363 ID in 1.1e-05 seconds.
+ *             Deleted 677287 ID in 1.5e-05 seconds.
+ *             Deleted 69094 ID in 8e-06 seconds.
+ *             Deleted 2117282 ID in 1.8e-05 seconds.
+ */
 void RedBlackTree::Remove(int value) {
     if(!this->Contains(value)) {
         throw invalid_argument("Node: " + to_string(value) + " not in RBT.");

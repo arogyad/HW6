@@ -43,8 +43,13 @@ int main(){
 
     int random = distr(generator);
     remove.push_back(random);
+    start = clock();
+    rbt.Remove(random);
+    stop = clock();
+    duration = (static_cast<double>(stop - start)) / CLOCKS_PER_SEC;
+    cout << "Deleted " << to_string(random) << " ID in " << (duration) << " seconds." << endl;
 
-    while(remove.size() != 10000){
+    while(remove.size() != 5){
         random = distr(generator);
 
         if(!std::binary_search(remove.begin(), remove.end(),random)) {
@@ -53,11 +58,16 @@ int main(){
             rbt.Remove(random);
             stop = clock();
             duration = (static_cast<double>(stop - start)) / CLOCKS_PER_SEC;
-            if(remove.size() % 1000 == 0){
-                cout << "Total Deleted: " << to_string(remove.size()) << endl;
-                cout << "Deleted " << to_string(random) << " ID in " << (duration) << " seconds." << endl;
-            }
+            cout << "Deleted " << to_string(random) << " ID in " << (duration) << " seconds." << endl;
         }
+    }
+
+    for(int val : remove)  {
+        start = clock();
+        rbt.Insert(val);
+        stop = clock();
+        duration = (static_cast<double>(stop - start)) / CLOCKS_PER_SEC;
+        cout << "Inserted " << to_string(val) << " ID in " << (duration) << " seconds." << endl;
     }
 
 	return 0;
