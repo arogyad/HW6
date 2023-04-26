@@ -53,7 +53,10 @@ int main(){
             rbt.Remove(random);
             stop = clock();
             duration = (static_cast<double>(stop - start)) / CLOCKS_PER_SEC;
-            cout << "Deleted " << to_string(random) << " ID in " << (duration) << " seconds." << endl;
+            if(remove.size() % 1000 == 0){
+                cout << "Total Deleted: " << to_string(remove.size()) << endl;
+                cout << "Deleted " << to_string(random) << " ID in " << (duration) << " seconds." << endl;
+            }
         }
     }
 
