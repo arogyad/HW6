@@ -375,7 +375,8 @@ void RedBlackTree::BinaryRemove(int value, RBTNode* from) {
         if(replacement->color == Color::Red || deleted->color == Color::Red) {
             deleted->color = Color::Black;
         } else {
-            deleted->color = Color::Red;
+            deleted->color = Color::DBlack;
+            this->fix_double_black(deleted);
         }
 
         delete replacement;
