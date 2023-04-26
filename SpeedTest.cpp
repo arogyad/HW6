@@ -10,7 +10,7 @@ template< typename T >
 typename std::vector<T>::iterator insert_sorted( std::vector<T> & vec, T const& item ) {
     return vec.insert
             (
-                    std::upper_bound( vec.begin(), vec.end(), item ),
+                    upper_bound( vec.begin(), vec.end(), item ),
                     item
             );
 }
@@ -46,7 +46,7 @@ int main(){
     while(remove.size() != 10000){
         random = distr(generator);
 
-        if(!std::binary_search(remove.begin(), remove.end(),random)) {
+        if(!binary_search(remove.begin(), remove.end(),random)) {
             insert_sorted(remove, random);
             start = clock();
             rbt.Remove(random);
