@@ -160,19 +160,64 @@ unsigned  int RedBlackTree::Size() const {
  * After the insertion, @param inserted points to the position of the currently inserted node.
  * Thus after RedBlackTree::BinaryInsert(9, &inserted), inserted points to R9, i.e. inserted == *R9.
  */
-void RedBlackTree::BinaryInsert(int value, RBTNode** inserted) {
+void RedBlackTree::BinaryInsert(int value, RBTNode **inserted, RBTNode*** parent, RBTNode*** grandparent, RBTNode*** uncle) {
     RBTNode** curr = &(this->root);
+    RBTNode** curr_p = nullptr;
+    RBTNode** curr_gp = nullptr;
 
     while(*curr != nullptr) {
         if((*curr)->value < value) {
+            curr_gp = curr_p;
+            curr_p = curr;
             curr = &((*curr)->right);
         } else {
+            curr_gp = curr_p;
+            curr_p = curr;
             curr = &((*curr)->left);
+        }
+    }
+
+    *parent = curr_p;
+    *grandparent = curr_gp;
+    if(curr_gp != nullptr && *curr_gp != nullptr) {
+        if((*curr_gp)->right == nullptr || ((*curr_gp)->left != nullptr && *((*curr_gp)->left) == **curr_p)) {
+            *uncle = &((*curr_gp)->right);
+        } else {
+            *uncle = &((*curr_gp)->left);
         }
     }
 
     *curr = new RBTNode{.value = value};
     *inserted = *curr;
+}
+
+void RedBlackTree::get_all(RBTNode* node, RBTNode*** parent, RBTNode*** grandparent, RBTNode*** uncle) {
+    RBTNode** curr = &(this->root);
+    RBTNode** curr_p = nullptr;
+    RBTNode** curr_gp = nullptr;
+
+    while(*curr != nullptr) {
+        if(**curr == *node) {
+            *parent = curr_p;
+            *grandparent = curr_gp;
+            if(curr_gp != nullptr && *curr_gp != nullptr) {
+                if((*curr_gp)->right == nullptr || ((*curr_gp)->left != nullptr && *((*curr_gp)->left) == **curr_p)) {
+                    *uncle = &((*curr_gp)->right);
+                } else {
+                    *uncle = &((*curr_gp)->left);
+                }
+            }
+            break;
+        } else if (**curr < *node) {
+            curr_gp = curr_p;
+            curr_p = curr;
+            curr = &((*curr)->right);
+        } else {
+            curr_gp = curr_p;
+            curr_p = curr;
+            curr = &((*curr)->left);
+        }
+    }
 }
 
 void RedBlackTree::fix_double_black(RBTNode* node) {
@@ -320,15 +365,16 @@ void RedBlackTree::BinaryRemove(int value, RBTNode* from) {
         }
 
         int val = replacement->value;
-        Color color_r = replacement->color;
+//        Color color_r = replacement->color;
 
         this->BinaryRemove(replacement->value, replacement);
 
         deleted->value = val;
-        if(color_r == Color::Black && deleted->color == Color::Black) {
-            deleted->color = Color::DBlack;
-            this->fix_double_black(deleted);
-        }
+        // should I add this or should I do this not? I don't need to change the value of the nodes do I?
+//        if(color_r == Color::Black && deleted->color == Color::Black) {
+//            deleted->color = Color::DBlack;
+//            this->fix_double_black(deleted);
+//        }
     }
 }
 
@@ -412,37 +458,6 @@ void RedBlackTree::find(RBTNode* node, RBTNode*** location) {
 }
 
 /**
- * Returns the sibling of the parent of the node
- * @param node : the node whose parent's sibling is to be found
- * @param uncle : the uncle is stored in this pointer to a pointer
- * We get the pointer to the actual uncle member, this makes the rotation simpler
- * For example:
- * If we have a Red-Black tree with following representation:
- * Here, *B5 represents that the node is a pointer to a RBTNode of color Black with value 5
- *                                                rbt = *B5
-                                                        / \
-                                                     *B3  *B8
-                                                       \     \
-                                                      *R4   *R12
- *              RBTNode* uncle = nullptr;
- *              this->get_uncle(*R12, &uncle);
- * The uncle pointer will be changed to a copy of the pointer to B3.
- */
-void RedBlackTree::get_uncle(RBTNode *node, RBTNode **uncle) {
-    RBTNode* parent = nullptr;
-    this->get_parent(node, &parent);
-
-    RBTNode* parent_parent = nullptr;
-    this->get_parent(parent, &parent_parent);
-
-    if(parent_parent->right == nullptr || (parent_parent->left != nullptr && (*parent == *(parent_parent->left)))) {
-        *uncle = parent_parent->right;
-    } else {
-        *uncle = parent_parent->left;
-    }
-}
-
-/**
  * Rotate the tree in leftward direction
  * @param node : a pointer that points to the actual RBTNode in the Red-Black Tree [Note: doesn't point to a copy of the RBTNode]
  * For example:
@@ -500,44 +515,35 @@ void RedBlackTree::right_rotate(RBTNode **node) {
  * This function performs the balacing operation based on the various balacing conditions
  * @param node : the node that was just added to the Binary Search Tree
  */
-void RedBlackTree::DoBalance(RBTNode* node) {
-    RBTNode* parent = nullptr; // pointer to the parent of the @param node
-    RBTNode* uncle = nullptr; // sibling of parent
-    RBTNode* grandparent = nullptr; // pointer to the parent of parent of the @param node
+void RedBlackTree::DoBalance(RBTNode* node, RBTNode** parent, RBTNode** grandparent, RBTNode** uncle) {
+    // These pointer to a pointer store the pointer to the RBTNode in Red-Black Tree
+    // The reason for them to be pointer->pointer is because this way making changes to the
+    // pointer pointed to by for example grandparent, changes the pointer to point somewhere else
+    // For reference please see comment on "this->find()" method
 
-    // This gets the parent of the current node and saves it into *parent
-    this->get_parent(node, &parent);
+//    RBTNode** parent = nullptr; // pointer to the parent of the @param node
+//    RBTNode** uncle = nullptr; // sibling of parent
+//    RBTNode** grandparent = nullptr; // pointer to the parent of the parent of @param node
+//
+//    this->get_all(node, &parent, &grandparent, &uncle);
 
-    // if the current node has no parent it must be the root node and root node is always Color::Black 
+    // if the current node has no parent it must be the root node and root node is always Color::Black
     if(parent == nullptr) {
         node->color = Color::Black;
         return;
     }
 
     // if the color of the parent is Color::Black, we don't need to make any changes to the Red-Black Tree
-    if(parent->color == Color::Black) {
+    if((*parent)->color == Color::Black) {
         return;
     } else {
-        this->get_uncle(node, &uncle);
 
         // The parent has no sibling or a Color::Black sibling then it must be rotated based on the
         // various balancing condition
-        if(uncle == nullptr || uncle->color == Color::Black) {
-            this->get_parent(parent, &grandparent);
+        if(*uncle == nullptr || (*uncle)->color == Color::Black) {
 
-
-            // These pointer to a pointer store the pointer to the RBTNode in Red-Black Tree
-            // The reason for them to be pointer->pointer is because this way making changes to the
-            // pointer pointed to by for example g_pointer, changes the pointer to point somewhere else
-            // For reference please see comment on "this->find()" method
-            RBTNode** g_pointer  = nullptr; // this is the pointer to the actual grandparent, not a copy of the parent pointer 
-            RBTNode** p_pointer = nullptr; // this is the pointer to the actual parent, not a copy of the parent pointer
-
-            this->find(grandparent, &g_pointer);
-            this->find(parent, &p_pointer);
-
-            if(grandparent->left == parent && parent->left == node) {
-                RedBlackTree::right_rotate(g_pointer);
+            if((*grandparent)->left == *parent && (*parent)->left == node) {
+                RedBlackTree::right_rotate(grandparent);
                 /**
                  * For example:
                  *              rbt = *B5
@@ -555,49 +561,47 @@ void RedBlackTree::DoBalance(RBTNode* node) {
                  *             rbt = *R4
                  *                   /  \
                  *                *R4   *R5
-                 * Here, the g_pointer will now point to the pointer *R4 rather than *R5 because g_pointer being
+                 * Here, the grandparent will now point to the pointer *R4 rather than *R5 because grandparent being
                  * pointer to a pointer used to point to *R5 location in RBT which has now been changed to *R4.
-                 * The pointer that g_pointer used to point to has now been changed to something else 
+                 * The pointer that grandparent used to point to has now been changed to something else
                  * (From *R5 to *R4)
-                 * , thus g_pointer now points to that changed pointer which now happens to be the grandparent
-                 * After recoloration it changes into:
+                 * , thus grandparent now points to that changed pointer which now happens to be the grandparent
+                 * After re-coloration it changes into:
                  *             rbt = *B4
                  *                   /  \
                  *                *R4   *R5
                  * 
                  * This same process happens for all of the other balancing conditions.
                  */
-                grandparent = *g_pointer;
-                grandparent->color = Color::Black;
-                grandparent->right->color = Color::Red;
-                grandparent->left->color = Color::Red;
-            } else if (grandparent->left == parent && parent->right == node) {
-                RedBlackTree::left_rotate(p_pointer);
-                RedBlackTree::right_rotate(g_pointer);
+                (*grandparent)->color = Color::Black;
+                (*grandparent)->right->color = Color::Red;
+                (*grandparent)->left->color = Color::Red;
+            } else if ((*grandparent)->left == *parent && (*parent)->right == node) {
+                RedBlackTree::left_rotate(parent);
+                RedBlackTree::right_rotate(grandparent);
                 node->right->color = Color::Red;
                 node->left->color = Color::Red;
                 node->color = Color::Black;
-            } else if (grandparent->right == parent && parent->right == node) {
-                RedBlackTree::left_rotate(g_pointer);
-                grandparent = *g_pointer;
-                grandparent->color = Color::Black;
-                grandparent->right->color = Color::Red;
-                grandparent->left->color = Color::Red;
+            } else if ((*grandparent)->right == *parent && (*parent)->right == node) {
+                RedBlackTree::left_rotate(grandparent);
+                (*grandparent)->color = Color::Black;
+                (*grandparent)->right->color = Color::Red;
+                (*grandparent)->left->color = Color::Red;
             } else {
-                RedBlackTree::right_rotate(p_pointer);
-                RedBlackTree::left_rotate(g_pointer);
+                RedBlackTree::right_rotate(parent);
+                RedBlackTree::left_rotate(grandparent);
                 node->right->color = Color::Red;
                 node->left->color = Color::Red;
                 node->color = Color::Black;
             }
         } else {
-            parent->color = Color::Black;
-            uncle->color = Color::Black;
+            (*parent)->color = Color::Black;
+            (*uncle)->color = Color::Black;
 
-            this->get_parent(parent, &grandparent);
-            grandparent->color = Color::Red;
-
-            this->DoBalance(grandparent);
+            (*grandparent)->color = Color::Red;
+            RBTNode* old_g = *grandparent;
+            this->get_all(*grandparent, &parent, &grandparent, &uncle);
+            this->DoBalance(old_g, parent, grandparent, uncle);
         }
     }
 }
@@ -612,20 +616,29 @@ void RedBlackTree::Insert(int value) {
         throw invalid_argument("Node: " + to_string(value) + " already in RBT.");
     }
 
+    RBTNode** parent = nullptr;
+    RBTNode** grandparent = nullptr;
+    RBTNode** uncle = nullptr;
+
     if(this->root == nullptr) {
         this->root = new RBTNode{.color = Color::Black, .value = value};
+        this->numItems++;
         return;
     } else {
-        this->BinaryInsert(value, &node);
+        this->BinaryInsert(value, &node, &parent, &grandparent, &uncle);
     }
 
-    this->DoBalance(node);
+    this->DoBalance(node, parent, grandparent, uncle);
     this->numItems++;
 }
 
 void RedBlackTree::Remove(int value) {
-    // TODO: Add check for the contain of the value in rbt
+    if(!this->Contains(value)) {
+        throw invalid_argument("Node: " + to_string(value) + " not in RBT.");
+    }
+
     this->BinaryRemove(value, this->root);
+    this->numItems--;
 }
 
 string RedBlackTree::ToPrefixString(const RBTNode* pos) {

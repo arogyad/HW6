@@ -52,12 +52,12 @@ private:
     static string ToInfixString(const RBTNode* pos);
     static string ToPrefixString(const RBTNode* pos);
     static string ToPostfixString(const RBTNode* pos);
-    void BinaryInsert(int val, RBTNode** inserted);
+    void get_all(RBTNode* node, RBTNode*** parent, RBTNode*** grandparent, RBTNode*** uncle);
+    void BinaryInsert(int value, RBTNode **inserted, RBTNode*** parent, RBTNode*** grandparent, RBTNode*** uncle);
     void BinaryRemove(int value, RBTNode* from);
-    void DoBalance(RBTNode* node);
+    void DoBalance(RBTNode* node, RBTNode** parent, RBTNode** grandparent, RBTNode** uncle);
     void get_parent(RBTNode* node, RBTNode** parent);
     void find(RBTNode* node, RBTNode*** location);
-    void get_uncle(RBTNode* node, RBTNode** uncle);
     void fix_double_black(RBTNode* node);
     static void right_rotate(RBTNode** node);
     static void left_rotate(RBTNode** node);
