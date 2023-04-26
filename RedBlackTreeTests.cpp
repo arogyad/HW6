@@ -275,27 +275,83 @@ void TestRemove() {
     delete rbt;
 }
 
+//void ManyInsert() {
+//    int x;
+//
+//    cin >> x;
+//
+//    RedBlackTree* rbt = new RedBlackTree();
+//
+//    while(x != -1) {
+//        rbt->Insert(x);
+//        cout << rbt->ToPrefixString() << endl;
+//        cin >> x;
+//    }
+//    cout << "Remove" << endl;
+//    cin >> x;
+//    while(x != -1) {
+//        rbt->Remove(x);
+//        cout << rbt->ToPrefixString() << endl;
+//        cin >> x;
+//    }
+//
+//    delete rbt;
+//}
+
+void Inserts() {
+    RedBlackTree* rbt = new RedBlackTree();
+
+    rbt->Insert(8);
+    rbt->Insert(4);
+    rbt->Insert(1);
+    rbt->Insert(6);
+    rbt->Insert(5);
+    rbt->Insert(7);
+    rbt->Insert(12);
+    rbt->Insert(9);
+    rbt->Insert(15);
+    rbt->Insert(13);
+    rbt->Insert(67);
+    rbt->Insert(68);
+    rbt->Insert(84);
+    rbt->Insert(95);
+    rbt->Insert(11);
+
+    cout << rbt->ToPrefixString() << endl;
+
+    int remove;
+    cin >> remove;
+
+    while(remove != -1) {
+        rbt->Remove(remove);
+        cout << rbt->ToPrefixString() << endl;
+        cin>> remove;
+    }
+
+}
 
 int main(){
+    Inserts();
 
-	
-	 TestSimpleConstructor();
-	
-	 TestInsertFirstNode();
-	 TestInsertSecondNode();
-	 TestInsertThirdNode();
-	 TestInsertFourthNode();
-	 TestInsertFifthNode();
+//	 TestSimpleConstructor();
+//
+//	 TestInsertFirstNode();
+//	 TestInsertSecondNode();
+//	 TestInsertThirdNode();
+//	 TestInsertFourthNode();
+//	 TestInsertFifthNode();
+//
+//	 TestToStrings();
+//	 TestInsertRandomTests();
+//
+//	 TestCopyConstructor();
+//
+//	 TestContains();
+//	 TestGetMinimumMaximum();
+//
+//	TestRemove();
 
-	 TestToStrings();
-	 TestInsertRandomTests();
-
-	 TestCopyConstructor();
-
-	 TestContains();
-	 TestGetMinimumMaximum();
-
-	TestRemove();
+//    ManyInsert();
 
 	
 	cout << "ALL TESTS PASSED!!" << endl;

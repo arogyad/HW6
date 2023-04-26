@@ -356,8 +356,16 @@ void RedBlackTree::BinaryRemove(int value, RBTNode* from) {
             deleted->value = replacement->value;
             deleted->left = nullptr;
         }
+
+        if(replacement->color == Color::Red) {
+            deleted->color = Color::Black;
+        }
+
+        deleted->color = Color::Black;
+
         delete replacement;
     } else {
+        // in-order successor
         replacement = deleted->right;
 
         while(replacement->left != nullptr) {
@@ -366,15 +374,12 @@ void RedBlackTree::BinaryRemove(int value, RBTNode* from) {
 
         int val = replacement->value;
 //        Color color_r = replacement->color;
+//        Color color_d = deleted->color;
 
-        this->BinaryRemove(replacement->value, replacement);
+        this->BinaryRemove(replacement->value, this->root);
 
         deleted->value = val;
-        // should I add this or should I do this not? I don't need to change the value of the nodes do I?
-//        if(color_r == Color::Black && deleted->color == Color::Black) {
-//            deleted->color = Color::DBlack;
-//            this->fix_double_black(deleted);
-//        }
+        deleted->color = Color::Black;
     }
 }
 
