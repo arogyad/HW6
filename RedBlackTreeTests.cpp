@@ -328,6 +328,7 @@ void Inserts() {
         cin>> remove;
     }
 
+    delete rbt;
 }
 
 int main(){
