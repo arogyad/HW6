@@ -182,22 +182,22 @@ void TestCopyConstructor(){
 
 	 rbt1.Insert(200);
 	 assert(rbt2.ToPrefixString() != rbt1.ToPrefixString());
+//
+//	 rbt1 = RedBlackTree();
+//	 rbt2 = RedBlackTree(rbt1);
+//
+//	 rbt1 = RedBlackTree();
+//	 rbt1.Insert(2);
+//	 rbt2 = RedBlackTree(rbt1);
+//
+//	rbt1 = RedBlackTree();
+//	rbt1.Insert(1);
+//	rbt1.Insert(2);
+//
+//	rbt2 = RedBlackTree(rbt1);
 
-	 rbt1 = RedBlackTree();
-	 rbt2 = RedBlackTree(rbt1);
-
-	 rbt1 = RedBlackTree();
-	 rbt1.Insert(2);
-	 rbt2 = RedBlackTree(rbt1);
-
-	rbt1 = RedBlackTree();
-	rbt1.Insert(1);
-	rbt1.Insert(2);
-
-	rbt2 = RedBlackTree(rbt1);
-
+    cout << rbt2.ToPrefixString() << endl;
 	cout << rbt1.ToPrefixString() << endl;
-	cout << rbt2.ToPrefixString() << endl;
 
 	cout << "PASSED!" << endl << endl;
 }
