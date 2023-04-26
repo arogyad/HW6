@@ -10,7 +10,7 @@ void TestSimpleConstructor(){
 	RedBlackTree rbt = RedBlackTree();
 	//cout << "empty r-b-tree: " << rbt->ToInfixString() << endl;
 	assert(rbt.ToInfixString() == "");
-	
+
 	cout << "PASSED!"<< endl << endl;
 }
 
@@ -130,6 +130,8 @@ void TestInsertRandomTests(){
 	cout << endl;
 	cout << "tree: " << rbt->ToInfixString() << endl;
 
+    delete rbt;
+
 	
 	// probably should have a delete or something here
 	rbt = new RedBlackTree();
@@ -147,7 +149,8 @@ void TestInsertRandomTests(){
 	rbt->Insert(7);
 	//cout << "tree: "  << rbt->ToInfixString() << endl;
 
-	
+    delete rbt;
+
 	rbt = new RedBlackTree();
 	//cout << endl << "NEW TREE" << endl;
 	rbt->Insert(12);
@@ -158,6 +161,7 @@ void TestInsertRandomTests(){
 	//cout << "tree: "  << rbt->ToPrefixString() << endl;
 
 	cout << "PASSED!" << endl << endl;
+    delete rbt;
 }
 
 void TestCopyConstructor(){
@@ -247,6 +251,7 @@ void TestGetMinimumMaximum(){
 	cout << "TESTS MISSING" << endl << endl;
 
 	cout << "PASSED!" << endl << endl;
+    delete rbt;
 }
 
 
@@ -267,6 +272,7 @@ void TestRemove() {
 	rbt->Remove(12);
 
 	cout << rbt->ToPrefixString() << endl;
+    delete rbt;
 }
 
 
