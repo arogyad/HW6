@@ -2,6 +2,7 @@
 #include <ctime>
 #include <vector>
 #include <random>
+#include <algorithm>
 #include "RedBlackTree.h"
 
 using namespace std;
@@ -46,9 +47,8 @@ int main(){
     while(remove.size() != 10000){
         random = distr(generator);
 
-        if(std::find(remove.begin(), remove.end(),random) == remove.end()) {
-//            insert_sorted(remove, random);
-            remove.push_back(random);
+        if(!std::binary_search(remove.begin(), remove.end(),random)) {
+            insert_sorted(remove, random);
             start = clock();
             rbt.Remove(random);
             stop = clock();
