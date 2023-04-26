@@ -232,21 +232,36 @@ void RedBlackTree::fix_double_black(RBTNode* node) {
     bool sibling_right = false;
 
     RBTNode* sibling;
-
-    if(parent->left->value == node->value){
-        sibling = parent->right;
-        sibling_right = true;
-    } else {
+    /**
+     * If the structure of the tree is
+     *                                  [A]
+     *                                /   \
+     *                              R(P)   [B]
+     *                            /     \
+     *                          Null    Node
+     *  This will make sure that the parent->left->value isn't accessed if the sibling node is null
+     */
+    if(parent->left == nullptr) {
         sibling = parent->left;
+    } else {
+        if(parent->left->value == node->value){
+            sibling = parent->right;
+            sibling_right = true;
+        } else {
+            sibling = parent->left;
+        }
     }
 
+
     // what if there is no sibling??
-    if(sibling->color == Color::Black) {
-        RBTNode* sibling_r = sibling->right;
-        RBTNode* sibling_l = sibling->left;
+    if(sibling == nullptr || sibling->color == Color::Black) {
+        RBTNode* sibling_r = sibling == nullptr ? nullptr : sibling->right;
+        RBTNode* sibling_l = sibling == nullptr ? nullptr : sibling->left;
 
         if((sibling_r == nullptr || sibling_r->color == Color::Black) && (sibling_l == nullptr || sibling_l->color == Color::Black)) {
-            sibling->color = Color::Red;
+            if(sibling != nullptr) {
+                sibling->color = Color::Red;
+            }
             node->color = Color::Black;
             if(parent->color == Color::Black) {
                 parent->color = Color::DBlack;
@@ -357,11 +372,11 @@ void RedBlackTree::BinaryRemove(int value, RBTNode* from) {
             deleted->left = nullptr;
         }
 
-        if(replacement->color == Color::Red) {
+        if(replacement->color == Color::Red || deleted->color == Color::Red) {
             deleted->color = Color::Black;
+        } else {
+            deleted->color = Color::Red;
         }
-
-        deleted->color = Color::Black;
 
         delete replacement;
     } else {
@@ -373,13 +388,17 @@ void RedBlackTree::BinaryRemove(int value, RBTNode* from) {
         }
 
         int val = replacement->value;
-//        Color color_r = replacement->color;
-//        Color color_d = deleted->color;
+        Color color_r = replacement->color;
+        Color color_d = deleted->color;
 
         this->BinaryRemove(replacement->value, this->root);
 
         deleted->value = val;
-        deleted->color = Color::Black;
+        if(color_r == Color::Red || color_d == Color::Red) {
+            deleted->color = Color::Black;
+        } else {
+            deleted->color = color_d;
+        }
     }
 }
 
