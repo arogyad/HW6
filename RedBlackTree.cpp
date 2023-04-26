@@ -391,7 +391,7 @@ void RedBlackTree::BinaryRemove(int value, RBTNode* from) {
         Color color_r = replacement->color;
         Color color_d = deleted->color;
 
-        this->BinaryRemove(replacement->value, this->root);
+        this->BinaryRemove(replacement->value, replacement);
 
         deleted->value = val;
         if(color_r == Color::Red || color_d == Color::Red) {
