@@ -44,10 +44,10 @@ public:
     int GetMax() const;
     int GetMin() const;
     unsigned int Size() const;
-    RBTNode* root = nullptr;
 
 private:
     unsigned long long int numItems = 0;
+    RBTNode* root = nullptr;
     static string ToInfixString(const RBTNode* pos);
     static string ToPrefixString(const RBTNode* pos);
     static string ToPostfixString(const RBTNode* pos);
