@@ -33,7 +33,7 @@ struct RBTNode {
 class RedBlackTree {
 public:
     RedBlackTree(const RedBlackTree &other);
-    RedBlackTree(){};
+    RedBlackTree()= default;
     ~RedBlackTree();
     string ToInfixString() const { return ToInfixString(this->root); }
     string ToPrefixString() const { return ToPrefixString(this->root); }

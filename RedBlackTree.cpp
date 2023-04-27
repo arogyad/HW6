@@ -1,5 +1,9 @@
 #include "RedBlackTree.h"
 
+/**
+ * The destructor for the RBT.
+ * It progressively removes the root node in the Red-Black Tree to empty out itself
+ */
 RedBlackTree::~RedBlackTree() {
     while(this->root != nullptr) {
         this->Remove(this->root->value);
@@ -159,6 +163,13 @@ unsigned  int RedBlackTree::Size() const {
  * This function only inserts the value based on the Binary Search Tree condition and doesn't perform the balancing.
  * After the insertion, @param inserted points to the position of the currently inserted node.
  * Thus after RedBlackTree::BinaryInsert(9, &inserted), inserted points to R9, i.e. inserted == *R9.
+ *
+ * [Edit:]
+ *      A couple of changes are made to make the insert operation more efficient. Since, we find inserted node here
+ *      we also keep track of the parent, grandparent, and the uncle node at the same time. This is done to remove the
+ *      need to traverse the tree again to find parent, grandparent, uncle etc during balancing
+ *      The arguments are *->*->* because in this way if we make any changes to the pointer pointed by this parent
+ *      it will cause the entire tree's orientation to be changed.
  */
 void RedBlackTree::BinaryInsert(int value, RBTNode **inserted, RBTNode*** parent, RBTNode*** grandparent, RBTNode*** uncle) {
     RBTNode** curr = &(this->root);
@@ -191,6 +202,31 @@ void RedBlackTree::BinaryInsert(int value, RBTNode **inserted, RBTNode*** parent
     *inserted = *curr;
 }
 
+/**
+ * This is a helper function that finds the parent, grandparent, and uncle of a node in a single traversal.
+ * This is done to make the traversal more efficient.
+ * @param node : the node whose parent, grandparent, and uncle is to be found
+ * @param parent : the pointer which points to the pointer containing the parent
+ * @param grandparent : the pointer which points to the pointer containing grandparent
+ * @param uncle : the pointer which points to the pointer containing uncle
+ *
+ * For example:
+ *              Given a RBT,
+ *                                  *B7
+ *                                 /   \
+ *                             *B2      *R9
+ *                                     /   \
+ *                                 *B8      *B10
+ *        Here *B7 means that the it points to Black RBTNode with value 7
+ *        RBTNode** parent = nullptr;
+ *        RBTNode** grandparent = nullptr;
+ *        RBTNode** uncle = nullptr;
+ *        Calling this->get_all(*R9, &parent, &grandparent, &uncle) gives us the parent, grandparent, and uncle of R9.
+ *        i.e.
+ *                          parent = *->(*B7)
+ *                          grandparent = *->nullptr
+ *                          uncle = *->(*B2)
+ */
 void RedBlackTree::get_all(RBTNode* node, RBTNode*** parent, RBTNode*** grandparent, RBTNode*** uncle) {
     RBTNode** curr = &(this->root);
     RBTNode** curr_p = nullptr;
@@ -220,6 +256,10 @@ void RedBlackTree::get_all(RBTNode* node, RBTNode*** parent, RBTNode*** grandpar
     }
 }
 
+/**
+ * Routine which fixes double black in the node
+ * @param node : node that contains a double black
+ */
 void RedBlackTree::fix_double_black(RBTNode* node) {
     if(this->root->value == node->value) {
         this->root->color = Color::Black;
@@ -252,8 +292,6 @@ void RedBlackTree::fix_double_black(RBTNode* node) {
         }
     }
 
-
-    // what if there is no sibling??
     if(sibling == nullptr || sibling->color == Color::Black) {
         RBTNode* sibling_r = sibling == nullptr ? nullptr : sibling->right;
         RBTNode* sibling_l = sibling == nullptr ? nullptr : sibling->left;
@@ -322,117 +360,6 @@ void RedBlackTree::fix_double_black(RBTNode* node) {
     }
 }
 
-// I think this should take a node as well, to let to know where it is removing from :)
-// TODO: Add a node argument in the function definition
-//void RedBlackTree::BinaryRemove(int value, RBTNode* from) {
-//    // first we are finding which node to remove, I think we have a good estimation of which to remove
-//    RBTNode* deleted = this->root;
-//    RBTNode *replacement = nullptr;
-//    RBTNode* parent = nullptr;
-//
-//    while(deleted != nullptr) {
-//        if(deleted->value == value) {
-//            break;
-//        } else if (deleted->value < value) {
-//            parent = deleted;
-//            deleted = deleted->right;
-//        } else {
-//            parent = deleted;
-//            deleted = deleted->left;
-//        }
-//    }
-//
-//    if(deleted->left == nullptr && deleted->right == nullptr) {
-////        RBTNode* parent = nullptr;
-////        this->get_parent(deleted, &parent);
-//
-//        if(deleted->color == Color::Black) {
-//           deleted->color = Color::DBlack;
-//           replacement = deleted;
-//           this->fix_double_black(replacement);
-//        }
-//
-//        // this is for the case of root node
-//        // could have done *deleted == *this->root
-//        if(parent == nullptr) {
-//            this->root = nullptr;
-//        } else {
-//            if(parent->right != nullptr && (*parent->right == *deleted)) {
-//                parent->right = nullptr;
-//            } else {
-//                parent->left = nullptr;
-//            }
-//        }
-//
-//        delete deleted;
-//    } else if (deleted->left == nullptr || deleted->right == nullptr) {
-//
-//       if(deleted->left == nullptr) {
-//            replacement = deleted->right;
-//       } else {
-//            replacement = deleted->left;
-//       }
-//
-//       if(parent == nullptr) {
-//           this->root = replacement;
-//           replacement->color = Color::Black;
-//           delete deleted;
-//           return;
-//       }
-//
-//       if(parent->right != nullptr && parent->right->value == deleted->value) {
-//           parent->right = replacement;
-//       } else {
-//           parent->left = replacement;
-//       }
-//
-//       if(replacement->value == this->root->value)  {
-//           replacement->color = Color::Black;
-//           delete deleted;
-//           return;
-//       }
-//
-//       if(deleted->color == Color::Red || replacement->color == Color::Red) {
-//           replacement->color = Color::Black;
-//       } else {
-//           replacement->color = Color::DBlack;
-//           this->fix_double_black(replacement);
-//       }
-//
-//       delete deleted;
-//    } else {
-//        // in-order successor
-////        replacement = deleted->right;
-//// here we are taking the node that was asked to be the replacement node and the in successor as the deleted node
-//        replacement = deleted;
-//        RBTNode* del_node = deleted->right;
-//
-//        while(del_node->left != nullptr) {
-//            del_node = del_node->left;
-//        }
-//
-//        int val = del_node->value;
-//        Color color_r = replacement->color;
-//        Color color_d = del_node->color;
-//
-//        this->BinaryRemove(del_node->value, replacement);
-//        replacement->value = val;
-//
-//        if(replacement->value == this->root->value) {
-//            replacement->color = Color::Black;
-//            return;
-//        }
-//
-//        if(color_r == Color::Red || color_d == Color::Red) {
-//            deleted->color = Color::Black;
-//        }
-////        } else {
-////            replacement->color = Color::DBlack;
-////            this->fix_double_black(replacement);
-////        }
-//    }
-//}
-
 /**
  * This function gets the node that replaces our deleted node in Red-Black Tree
  * @param value : The removed node
@@ -466,11 +393,16 @@ void RedBlackTree::get_node_replacement(int value, RBTNode** node, RBTNode** rep
     }
 }
 
+/**
+ * Regular Binary remove of a Binary Search Tree with addition to accommodate double black condition
+ * @param value : the value to be removed from Red-Black Tree
+ */
 void RedBlackTree::BinaryRemove(int value) {
     RBTNode* replacement= nullptr;
     RBTNode* node= nullptr;
     this->get_node_replacement(value, &node, &replacement);
 
+    // checking if the current remove causes a double black case
     bool is_double_b = ((replacement == nullptr || replacement->color == Color::Black) && (node->color == Color::Black));
 
     // This is the case when the node is the leaf node
@@ -481,9 +413,8 @@ void RedBlackTree::BinaryRemove(int value) {
         // If we are removing the last root
         if(node->value == this->root->value) {
             this->root = nullptr;
-            delete node;
-            return;
         } else {
+            // If we remove a black leaf node
             if(is_double_b) {
                 this->fix_double_black(node);
             }
@@ -496,13 +427,14 @@ void RedBlackTree::BinaryRemove(int value) {
         }
 
         delete node;
-        // This is where single child case ends
     } else if (node->left == nullptr || node->right == nullptr) {
         // For the case of root if it has one child
         if(node->value == this->root->value) {
             this->root = replacement;
+            this->root->color = Color::Black;
             delete node;
         } else {
+            // Removing one child
             RBTNode* parent = nullptr;
             this->get_parent(node, &parent);
 
@@ -512,6 +444,8 @@ void RedBlackTree::BinaryRemove(int value) {
                 parent->right = replacement;
             }
             delete node;
+
+            // if the removed and the replaced nodes both were black, removing one would violate red-black condition
             if(is_double_b) {
                 this->fix_double_black(replacement);
             } else {
@@ -519,6 +453,7 @@ void RedBlackTree::BinaryRemove(int value) {
             }
         }
     } else {
+        // 2-child case, we take the in-place successor and remove that successor
         int replace = replacement->value;
         this->BinaryRemove(replace);
         node->value = replace;
