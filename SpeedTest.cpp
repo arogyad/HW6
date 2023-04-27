@@ -49,7 +49,7 @@ int main(){
     duration = (static_cast<double>(stop - start)) / CLOCKS_PER_SEC;
     cout << "Deleted " << to_string(random) << " ID in " << (duration) << " seconds." << endl;
 
-    while(remove.size() != 1000000){
+    while(remove.size() != 10000){
         random = distr(generator);
 
         if(!std::binary_search(remove.begin(), remove.end(),random)) {
