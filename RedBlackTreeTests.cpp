@@ -97,6 +97,7 @@ void TestInsertFifthNode(){
 	cout << "TESTS MISSING" << endl << endl;
 	
 	cout << "PASSED!" << endl << endl;
+    delete rbt;
 }
 
 

@@ -596,19 +596,13 @@ void RedBlackTree::right_rotate(RBTNode **node) {
 /**
  * This function performs the balacing operation based on the various balacing conditions
  * @param node : the node that was just added to the Binary Search Tree
+ *
+ * [Edit:]
+ *      The DoBalance function now takes *->parent, *->grandparent, and *->uncle to make th program more efficient
+ *      This removes the need to calculate parent, grandparent, and uncle individually.
+ *      Please see @func get_all() for reference.
  */
 void RedBlackTree::DoBalance(RBTNode* node, RBTNode** parent, RBTNode** grandparent, RBTNode** uncle) {
-    // These pointer to a pointer store the pointer to the RBTNode in Red-Black Tree
-    // The reason for them to be pointer->pointer is because this way making changes to the
-    // pointer pointed to by for example grandparent, changes the pointer to point somewhere else
-    // For reference please see comment on "this->find()" method
-
-//    RBTNode** parent = nullptr; // pointer to the parent of the @param node
-//    RBTNode** uncle = nullptr; // sibling of parent
-//    RBTNode** grandparent = nullptr; // pointer to the parent of the parent of @param node
-//
-//    this->get_all(node, &parent, &grandparent, &uncle);
-
     // if the current node has no parent it must be the root node and root node is always Color::Black
     if(parent == nullptr) {
         node->color = Color::Black;
@@ -619,11 +613,9 @@ void RedBlackTree::DoBalance(RBTNode* node, RBTNode** parent, RBTNode** grandpar
     if((*parent)->color == Color::Black) {
         return;
     } else {
-
         // The parent has no sibling or a Color::Black sibling then it must be rotated based on the
         // various balancing condition
         if(*uncle == nullptr || (*uncle)->color == Color::Black) {
-
             if((*grandparent)->left == *parent && (*parent)->left == node) {
                 RedBlackTree::right_rotate(grandparent);
                 /**
