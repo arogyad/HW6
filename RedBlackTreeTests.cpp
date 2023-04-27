@@ -332,25 +332,24 @@ void Inserts() {
 }
 
 int main(){
-//    Inserts();
-
-	 TestSimpleConstructor();
-
-	 TestInsertFirstNode();
-	 TestInsertSecondNode();
-	 TestInsertThirdNode();
-	 TestInsertFourthNode();
-	 TestInsertFifthNode();
-
-	 TestToStrings();
-	 TestInsertRandomTests();
-
-	 TestCopyConstructor();
-
-	 TestContains();
-	 TestGetMinimumMaximum();
-
-	TestRemove();
+    Inserts();
+//	 TestSimpleConstructor();
+//
+//	 TestInsertFirstNode();
+//	 TestInsertSecondNode();
+//	 TestInsertThirdNode();
+//	 TestInsertFourthNode();
+//	 TestInsertFifthNode();
+//
+//	 TestToStrings();
+//	 TestInsertRandomTests();
+//
+//	 TestCopyConstructor();
+//
+//	 TestContains();
+//	 TestGetMinimumMaximum();
+//
+//	TestRemove();
 
 //    ManyInsert();
 

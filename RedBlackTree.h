@@ -9,7 +9,6 @@ using namespace std;
 enum Color {
     Red = 0,
     Black = 1,
-    DBlack
 };
 
 struct RBTNode {
@@ -45,16 +44,17 @@ public:
     int GetMax() const;
     int GetMin() const;
     unsigned int Size() const;
+    RBTNode* root = nullptr;
 
 private:
-    RBTNode* root = nullptr;
     unsigned long long int numItems = 0;
     static string ToInfixString(const RBTNode* pos);
     static string ToPrefixString(const RBTNode* pos);
     static string ToPostfixString(const RBTNode* pos);
     void get_all(RBTNode* node, RBTNode*** parent, RBTNode*** grandparent, RBTNode*** uncle);
+    void get_node_replacement(int value, RBTNode** node, RBTNode** replacement);
     void BinaryInsert(int value, RBTNode **inserted, RBTNode*** parent, RBTNode*** grandparent, RBTNode*** uncle);
-    void BinaryRemove(int value, RBTNode* from);
+    void BinaryRemove(int value);
     void DoBalance(RBTNode* node, RBTNode** parent, RBTNode** grandparent, RBTNode** uncle);
     void get_parent(RBTNode* node, RBTNode** parent);
     void find(RBTNode* node, RBTNode*** location);
