@@ -501,6 +501,7 @@ void RedBlackTree::BinaryRemove(int value) {
         // For the case of root if it has one child
         if(node->value == this->root->value) {
             this->root = replacement;
+            delete node;
         } else {
             RBTNode* parent = nullptr;
             this->get_parent(node, &parent);
