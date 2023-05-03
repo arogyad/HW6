@@ -5,7 +5,7 @@
 
 template <typename T> 
 LinkedList<T>::~LinkedList() {
-	Node* curr = this->head;
+	Node<T>* curr = this->head;
 
 	while(curr != nullptr) {
 		delete curr;
