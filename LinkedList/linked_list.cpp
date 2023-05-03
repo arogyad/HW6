@@ -14,18 +14,24 @@ LinkedList<T>::~LinkedList() {
 	}
 }
 
+/**
+ * Inserts an item @param item at position @param pos in the list
+ */
 template <typename T>
 void LinkedList<T>::insert(size_t pos, T item) {
+	// If the insertion is at head
 	if(pos == 0) {
 		this->push_front(item);
 		return;
 	}
 
+	// if the insertion is at tail
 	if(pos == this->numItems) {
 		this->push_back(item);
 		return;
 	}
 
+	// before the first or after the last gives error
 	if(pos < 0 || pos > this->numItems) {
 		throw std::invalid_argument("Cannot insert in this position.");
 	}
@@ -41,12 +47,24 @@ void LinkedList<T>::insert(size_t pos, T item) {
 	Node<T>* insert_node = new Node<T>;
 	insert_node->data = item;
 
+	/**
+	 * Given: 1 <-> 2 <-> 3 <-> 4
+	 * insert(2, 0)
+	 * prev = 2
+	 * curr = 3
+	 * inserted_node = 0
+	 */
 	Node<T>* prev = curr->prev;
+	// 2 -> 0
 	prev->next = insert_node;
+	// 0 <- 3
 	curr->prev = insert_node;
+	// 2 <- 0
 	insert_node->prev = prev;
+	// 0 -> 3
 	insert_node->next = curr;
 	
+	// Final: 1 <-> 2 <-> 0 <-> 3 <-> 4
 	this->numItems++;
 }
 
