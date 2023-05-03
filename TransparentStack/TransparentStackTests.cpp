@@ -1,5 +1,6 @@
 #include "./TransparentStack.h"
 #include <iostream>
+#include <cassert>
 
 void Tests() {
     cout << "------Testing-------" << endl;
