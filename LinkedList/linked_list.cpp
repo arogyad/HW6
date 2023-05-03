@@ -8,7 +8,9 @@ LinkedList<T>::~LinkedList() {
 	Node<T>* curr = this->head;
 
 	while(curr != nullptr) {
+		Node<T>* next = curr->next;
 		delete curr;
+		curr = next;
 	}
 }
 
