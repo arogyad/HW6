@@ -112,8 +112,11 @@ void InsertTests(){
 	ll->insert(1, 10);
 	ll->insert(1, 20);
 
+	cout << num_ll_to_string(ll) << endl;
 
 	cout << "TESTS MISSING!!!" << endl << endl;
+
+	delete ll;
 }
 
 

@@ -17,7 +17,7 @@ LinkedList<T>::~LinkedList() {
 template <typename T>
 void LinkedList<T>::insert(size_t pos, T item) {
 	if(pos < 0 || pos > this->size) {
-		throw invalid_argument("Cannot insert in position: " + to_string(pos));
+		throw invalid_argument("Cannot insert in position");
 	}
 
 	if(pos == 0) {
@@ -33,7 +33,7 @@ void LinkedList<T>::insert(size_t pos, T item) {
 	size_t idx = 0;
 	Node<T>* curr = this->head;
 
-	while(curr != pos) {
+	while(idx != pos) {
 		curr = curr->next;
 		idx++;
 	}
