@@ -107,6 +107,12 @@ void PushFrontTests(){
 void InsertTests(){
 	cout << "Insert Test..." << endl;
 
+	LinkedList<unsigned int> *ll = new LinkedList<unsigned int>();
+	ll->insert(0, 10);
+	ll->insert(1, 10);
+	ll->insert(1, 20);
+
+
 	cout << "TESTS MISSING!!!" << endl << endl;
 }
 

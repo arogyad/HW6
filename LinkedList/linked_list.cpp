@@ -14,6 +14,42 @@ LinkedList<T>::~LinkedList() {
 	}
 }
 
+template <typename T>
+void LinkedList<T>::insert(size_t pos, T item) {
+	if(pos < 0 || pos > this->size) {
+		throw invalid_argument("Cannot insert in position: " + to_string(pos));
+	}
+
+	if(pos == 0) {
+		this->push_front(item);
+		return;
+	}
+
+	if(pos == this->size) {
+		this->push_back(item);
+		return;
+	}
+
+	size_t idx = 0;
+	Node<T>* curr = this->head;
+
+	while(curr != pos) {
+		curr = curr->next;
+		idx++;
+	}
+
+	Node<T>* insert_node = new Node<T>;
+	insert_node->data = item;
+
+	Node<T>* prev = curr->prev;
+	prev->next = insert_node;
+	curr->prev = insert_node;
+	insert_node->prev = prev;
+	insert_node->next = curr;
+	
+	this->size++;
+}
+
 template <typename T> 
 void LinkedList<T>::push_back(T item){
 	Node<T> *n = new Node<T>;
