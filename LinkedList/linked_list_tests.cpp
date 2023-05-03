@@ -109,9 +109,10 @@ void InsertTests(){
 
 	LinkedList<unsigned int> *ll = new LinkedList<unsigned int>();
 	ll->insert(0, 0);
-	ll->insert(1, 10);
+	ll->insert(0, 10);
 	ll->insert(1, 20);
 	ll->insert(2, 30);
+	ll->insert(0, 40);
 
 	try
 	{
@@ -124,7 +125,7 @@ void InsertTests(){
 
 	try
 	{
-		ll->insert(-1, 20);
+		ll->insert(5, 20);
 	}
 	catch(const std::exception& e)
 	{
@@ -132,7 +133,6 @@ void InsertTests(){
 	}
 	
 	
-
 	cout << num_ll_to_string(ll) << endl;
 
 	cout << "TESTS MISSING!!!" << endl << endl;
