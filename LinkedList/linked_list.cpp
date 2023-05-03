@@ -4,6 +4,15 @@
 //#include <iostream>
 
 template <typename T> 
+LinkedList<T>::~LinkedList() {
+	Node* curr = this->head;
+
+	while(curr != nullptr) {
+		delete curr;
+	}
+}
+
+template <typename T> 
 void LinkedList<T>::push_back(T item){
 	Node<T> *n = new Node<T>;
 	n->data = item;
