@@ -108,9 +108,30 @@ void InsertTests(){
 	cout << "Insert Test..." << endl;
 
 	LinkedList<unsigned int> *ll = new LinkedList<unsigned int>();
-	ll->insert(0, 10);
+	ll->insert(0, 0);
 	ll->insert(1, 10);
 	ll->insert(1, 20);
+	ll->insert(2, 30);
+
+	try
+	{
+		ll->insert(-1, 20);
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << e.what() << '\n';
+	}
+
+	try
+	{
+		ll->insert(-1, 20);
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << e.what() << '\n';
+	}
+	
+	
 
 	cout << num_ll_to_string(ll) << endl;
 
