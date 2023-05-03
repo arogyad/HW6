@@ -17,7 +17,7 @@ LinkedList<T>::~LinkedList() {
 template <typename T>
 void LinkedList<T>::insert(size_t pos, T item) {
 	if(pos < 0 || pos >= this->numItems) {
-		throw std::invalid_argument("Cannot insert in this position");
+		throw std::invalid_argument("Cannot insert in this position" + to_string(pos));
 	}
 
 	if(pos == 0) {
